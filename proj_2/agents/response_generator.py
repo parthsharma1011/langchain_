@@ -49,6 +49,8 @@ class ResponseGeneratorAgent:
             For account issues: Ask for customer email OR full name
             
             Write a helful response asking for the missing information:"""
+            response = call_claude(self.bedrock_client, prompt, temperature=0.4, max_tokens=600)
+            return response if response else "I apologize, but I'm having trouble processing your request right now. Please try again."
         else:
             prompt = f"""
             You are a friendly customer service agent for Asia on Plate, an Asian grocery delivery service in Berlin.
@@ -72,6 +74,17 @@ class ResponseGeneratorAgent:
             - If no relevant information was found, politely explain and offer alternatives
             
             Write the response now:"""
+            response = call_claude(self.bedrock_client, prompt, temperature=0.4, max_tokens=600)
+            
+            if response:
+                print(f"    Response generated")
+                
+                # Add source attribution only if information was found
+                if sources and 'MISSING_INFORMATION:' not in information:
+                    response += f"\n\n---\n Information source: {', '.join(sources)}"
+            
+            return response if response else "I apologize, but I'm having trouble processing your request right now. Please try again."
+
             
             
             

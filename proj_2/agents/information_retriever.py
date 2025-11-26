@@ -5,8 +5,10 @@
 import json 
 from tavily import TavilyClient
 from config import Config
-
-#Vector db -> 
+from difflib import SequenceMatcher
+from pinecone import Pinecone
+import time
+import hashlib 
 
 class InformationRetrieverAgent:
     def __init__(self, bedrock_client):
@@ -18,11 +20,14 @@ class InformationRetrieverAgent:
         with open('data/support_guide.txt','r') as f:
             self.knowledge_base = f.read()
             
-        with open('data/orders_json','r') as f:
-            self.orders_db = json.load(f)
+        with open('data/orders.json','r') as f:
+            orders_data = json.load(f)
+            self.orders_db = orders_data.get('orders', [])
             
+        # Initialize simple text search
         self.kb_chunks = self._prepare_knowledge_chunks()
         
+        # Initialize Pinecone vector database
         self._setup_pinecone()
             
     def retrieve(self,query_analysis):
@@ -112,17 +117,3 @@ class InformationRetrieverAgent:
             print(f"    No information found")
             
         return result
-            
-        
-        
-                
-             
-        
-        
-        
-        
-        
-        
-
-    
-    
