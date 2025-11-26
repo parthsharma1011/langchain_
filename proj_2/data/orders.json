@@ -1,0 +1,111 @@
+{
+  "orders": [
+    {
+      "order_id": "12345",
+      "customer_email": "john@example.com",
+      "customer_name": "John Smith",
+      "status": "delivered",
+      "items": ["Shin Ramyun x3", "Kimchi 500g", "Soy Sauce"],
+      "total": 15.47,
+      "order_date": "2024-11-18",
+      "delivery_date": "2024-11-19",
+      "tracking": "DHL123456789"
+    },
+    {
+      "order_id": "12346",
+      "customer_email": "maria@example.com",
+      "customer_name": "Maria Garcia",
+      "status": "out_for_delivery",
+      "items": ["Sushi Rice 1kg", "Nori sheets", "Wasabi"],
+      "total": 12.97,
+      "order_date": "2024-11-20",
+      "estimated_delivery": "2024-11-21 by 6 PM",
+      "tracking": "DHL987654321"
+    },
+    {
+      "order_id": "12347",
+      "customer_email": "ahmed@example.com",
+      "customer_name": "Ahmed Hassan",
+      "status": "processing",
+      "items": ["Basmati Rice 5kg", "Garam Masala", "Lentils"],
+      "total": 18.99,
+      "order_date": "2024-11-21",
+      "estimated_delivery": "2024-11-22"
+    },
+    {
+      "order_id": "12348",
+      "customer_email": "lisa@example.com",
+      "customer_name": "Lisa Chen",
+      "status": "delivered",
+      "items": ["Thai Curry Paste", "Coconut Milk x3", "Rice Noodles"],
+      "total": 11.86,
+      "order_date": "2024-11-17",
+      "delivery_date": "2024-11-18",
+      "tracking": "DHL555444333"
+    },
+    {
+      "order_id": "12349",
+      "customer_email": "sarah@example.com",
+      "customer_name": "Sarah Mueller",
+      "status": "shipped",
+      "items": ["Japanese Miso Paste", "Udon Noodles x2", "Tempura Flour"],
+      "total": 22.45,
+      "order_date": "2024-11-22",
+      "estimated_delivery": "2024-11-23 by 5 PM",
+      "tracking": "DHL777888999"
+    },
+    {
+      "order_id": "12350",
+      "customer_email": "mike@example.com",
+      "customer_name": "Michael Johnson",
+      "status": "processing",
+      "items": ["Gochujang", "Korean BBQ Sauce", "Sesame Oil", "Rice Cakes"],
+      "total": 28.97,
+      "order_date": "2024-11-22",
+      "estimated_delivery": "2024-11-24"
+    },
+    {
+      "order_id": "12351",
+      "customer_email": "anna@example.com",
+      "customer_name": "Anna Schmidt",
+      "status": "delivered",
+      "items": ["Vietnamese Rice Paper", "Fish Sauce", "Tamarind Paste"],
+      "total": 16.47,
+      "order_date": "2024-11-19",
+      "delivery_date": "2024-11-20",
+      "tracking": "DHL111222333"
+    },
+    {
+      "order_id": "12352",
+      "customer_email": "david@example.com",
+      "customer_name": "David Brown",
+      "status": "cancelled",
+      "items": ["Matcha Powder", "Red Bean Paste", "Mochi"],
+      "total": 31.47,
+      "order_date": "2024-11-21",
+      "cancellation_reason": "Customer requested cancellation",
+      "refund_status": "processed"
+    },
+    {
+      "order_id": "12353",
+      "customer_email": "elena@example.com",
+      "customer_name": "Elena Petrov",
+      "status": "out_for_delivery",
+      "items": ["Chinese Dumplings x2", "Black Bean Sauce", "Oyster Sauce"],
+      "total": 19.96,
+      "order_date": "2024-11-21",
+      "estimated_delivery": "2024-11-22 by 7 PM",
+      "tracking": "DHL444555666"
+    },
+    {
+      "order_id": "12354",
+      "customer_email": "thomas@example.com",
+      "customer_name": "Thomas Weber",
+      "status": "ready_for_dispatch",
+      "items": ["Basmati Rice 5kg", "Curry Powder", "Coconut Milk x4", "Papad"],
+      "total": 35.48,
+      "order_date": "2024-11-22",
+      "estimated_delivery": "2024-11-23"
+    }
+  ]
+}

@@ -7,11 +7,11 @@ from prompts import get_fact_check_prompt
 
 
 class Config:
-    AWS_ACCESS_KEY_ID = 'YOUR_AWS_ACCESS_KEY_ID_HERE'
-    AWS_SECRET_ACCESS_KEY = 'YOUR_AWS_SECRET_ACCESS_KEY_HERE'
+    AWS_ACCESS_KEY_ID = 'your_aws_access_key_id'
+    AWS_SECRET_ACCESS_KEY = 'your_aws_secret_access_key'
     AWS_REGION = 'us-east-1'
     BEDROCK_MODEL_ID = "anthropic.claude-3-haiku-20240307-v1:0"
-    TAVILY_API_KEY = "YOUR_TAVILY_API_KEY_HERE"
+    TAVILY_API_KEY = "your_tavily_api_key"
     
 def setup_bedrock_client():
     try:
@@ -161,3 +161,5 @@ def main():
             
 if __name__ == "__main__":
     main()
+    
+    
