@@ -1,56 +1,23 @@
 # Core Dependencies
-boto3==1.34.34
-pinecone-client==2.2.4
-tavily-python==0.3.3
-
-# AWS and Cloud Services
-botocore==1.34.34
+boto3>=1.34.0
+pinecone-client>=2.2.0
+tavily-python>=0.3.0
 
 # Data Processing
-pandas==2.1.4
-numpy==1.24.3
-json5==0.9.14
-
-# Text Processing and Similarity
-difflib2==0.1.2
+pandas>=2.2.0
+numpy>=1.24.0
 
 # HTTP and API Clients
-requests==2.31.0
-urllib3==2.1.0
+requests>=2.31.0
 
 # Utility Libraries
-python-dotenv==1.0.0
-pydantic==2.5.2
+python-dotenv>=1.0.0
 
 # Web Interface
-gradio==4.44.0
+gradio>=4.0.0
 
-# Environment Variables
-python-dotenv==1.0.0
-
-# Development and Testing (Optional)
-pytest==7.4.3
-pytest-asyncio==0.21.1
-black==23.12.1
-flake8==6.1.0
-
-# Logging and Monitoring
-structlog==23.2.0
+# Text Processing
+difflib
 
 # Type Hints
-typing-extensions==4.9.0
-
-# Security
-cryptography==41.0.8
-
-# Configuration Management
-pyyaml==6.0.1
-
-# Date and Time Utilities
-python-dateutil==2.8.2
-
-# Performance Monitoring (Optional)
-psutil==5.9.6
-
-# Async Support (Future Enhancement)
-aiohttp==3.9.1
+typing-extensions>=4.0.0
