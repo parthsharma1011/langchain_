@@ -1,6 +1,6 @@
 # Asia on Plate Customer Service Bot
 
-A sophisticated multi-agent customer service system built for Asia on Plate, an Asian grocery delivery service in Berlin. The system uses AWS Bedrock, Pinecone vector database, and Tavily web search to provide intelligent customer support.
+A sophisticated multi-agent customer service system built for Asia on Plate, an Asian grocery delivery service in Berlin. The system uses AWS Bedrock, Pinecone vector database, and Tavily web search to provide intelligent customer support through a modern Gradio web interface.
 
 ## System Architecture
 
@@ -20,6 +20,13 @@ The bot implements a three-agent architecture:
 - Account management support
 - Conversation state management for follow-up queries
 
+### Web Interface
+- Modern Gradio-based chat interface
+- Real-time message exchange
+- Message history and conversation state
+- Example queries for easy testing
+- Responsive design for all devices
+
 ### Data Sources
 - Internal order database (JSON)
 - Knowledge base (comprehensive support guide)
@@ -36,7 +43,7 @@ The bot implements a three-agent architecture:
 ## Project Structure
 
 ```
-proj_2/
+langchain_basics/
 ├── agents/
 │   ├── query_analyzer.py           # Query analysis and classification
 │   ├── information_retriever.py    # Multi-source information retrieval
@@ -46,9 +53,14 @@ proj_2/
 │   └── support_guide.txt           # Comprehensive knowledge base
 ├── utils/
 │   └── bedrock_client.py           # AWS Bedrock client utilities
-├── config.py                       # Configuration and API keys
-├── main.py                         # Main application entry point
+├── static/                         # Static files (if needed)
+├── app.py                          # Gradio web application
+├── main.py                         # Core bot logic
+├── config.py                       # Configuration management
 ├── requirements.txt                # Python dependencies
+├── .env.example                    # Environment variables template
+├── .gitignore                      # Git ignore rules
+├── start.sh                        # Deployment startup script
 └── README.md                       # This file
 ```
 
@@ -60,44 +72,64 @@ proj_2/
 - Pinecone account and API key
 - Tavily API key for web search
 
-### Installation Steps
+### Local Development Setup
 
-1. Clone the repository and navigate to proj_2:
+1. **Clone the repository:**
 ```bash
-cd proj_2
+git clone https://github.com/parthsharma1011/langchain_.git
+cd langchain_
 ```
 
-2. Install required dependencies:
+2. **Install dependencies:**
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Configure API keys in config.py:
-```python
-class Config:
-    # AWS Bedrock Configuration
-    AWS_ACCESS_KEY_ID = "your_aws_access_key"
-    AWS_SECRET_ACCESS_KEY = "your_aws_secret_key"
-    AWS_REGION = "us-east-1"
-    BEDROCK_MODEL_ID = "anthropic.claude-3-haiku-20240307-v1:0"
-    
-    # External Services
-    TAVILY_API_KEY = "your_tavily_api_key"
-    PINECONE_API_KEY = "your_pinecone_api_key"
-    
-    # Agent Settings
-    MAX_TOKENS = 2048
-    TEMPERATURE = 0.7
+3. **Environment Configuration:**
+```bash
+# Copy the environment template
+cp .env.example .env
+
+# Edit .env with your actual API keys
+nano .env
 ```
 
-4. Ensure AWS Bedrock access:
+4. **Configure your .env file:**
+```env
+# AWS Bedrock Configuration
+AWS_ACCESS_KEY_ID=your_aws_access_key_id
+AWS_SECRET_ACCESS_KEY=your_aws_secret_access_key
+AWS_REGION=us-east-1
+BEDROCK_MODEL_ID=anthropic.claude-3-haiku-20240307-v1:0
+
+# External Services
+TAVILY_API_KEY=your_tavily_api_key
+PINECONE_API_KEY=your_pinecone_api_key
+
+# Agent Settings
+MAX_TOKENS=2048
+TEMPERATURE=0.7
+```
+
+5. **Ensure AWS Bedrock access:**
    - Enable Bedrock in your AWS region
    - Request access to Claude models
    - Verify IAM permissions for Bedrock
 
 ## Usage
 
-### Running the Interactive Bot
+### Running Locally
+
+**Start the Gradio web interface:**
+```bash
+python app.py
+```
+
+**Access the application:**
+- Open browser to `http://localhost:7860`
+- You'll see a professional chat interface
+
+**Command line interface (optional):**
 ```bash
 python main.py
 ```
@@ -124,31 +156,69 @@ Customer: john@example.com
 Bot: I found your order! Order 12345: Status - delivered, Items - Shin Ramyun x3, Kimchi 500g, Soy Sauce...
 ```
 
+## Deployment
+
+### Render Cloud Deployment
+
+1. **Push to GitHub** (ensure .env is in .gitignore)
+
+2. **On Render.com:**
+   - Connect your GitHub repository
+   - Choose "Web Service"
+   - **Build Command:** `pip install -r requirements.txt`
+   - **Start Command:** `python app.py`
+   - **Environment:** Python 3
+
+3. **Set Environment Variables on Render:**
+   ```
+   AWS_ACCESS_KEY_ID=your_actual_key
+   AWS_SECRET_ACCESS_KEY=your_actual_secret
+   AWS_REGION=us-east-1
+   BEDROCK_MODEL_ID=anthropic.claude-3-haiku-20240307-v1:0
+   TAVILY_API_KEY=your_actual_key
+   PINECONE_API_KEY=your_actual_key
+   MAX_TOKENS=2048
+   TEMPERATURE=0.7
+   ```
+
+4. **Deploy** - Render will provide a public URL
+
+### Other Deployment Options
+
+**Heroku:**
+```bash
+# Add Procfile
+echo "web: python app.py" > Procfile
+```
+
+**Docker:**
+```dockerfile
+FROM python:3.9-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+EXPOSE 7860
+CMD ["python", "app.py"]
+```
+
 ## Configuration Options
 
 ### Model Parameters
-```python
-MAX_TOKENS = 2048           # Maximum response length
-TEMPERATURE = 0.7           # Response creativity (0.0-1.0)
+```env
+MAX_TOKENS=2048           # Maximum response length
+TEMPERATURE=0.7           # Response creativity (0.0-1.0)
+BEDROCK_MODEL_ID=anthropic.claude-3-haiku-20240307-v1:0  # Model selection
 ```
 
 ### Agent Behavior
-```python
-# Query classification confidence thresholds
-CLASSIFICATION_THRESHOLD = 0.8
-
-# Information retrieval settings
-MAX_SEARCH_RESULTS = 3
-SIMILARITY_THRESHOLD = 0.7
-
-# Conversation management
-MAX_CONVERSATION_TURNS = 10
-```
+- Query classification confidence thresholds
+- Information retrieval settings
+- Conversation management parameters
 
 ## Data Management
 
 ### Order Database Structure
-The system uses a JSON file to simulate an order database:
 ```json
 {
   "orders": [
@@ -174,168 +244,117 @@ Comprehensive support guide covering:
 - Account management
 - Contact information
 
-## Agent Details
+## Code Audit Summary
 
-### Query Analyzer Agent
-**Purpose**: Analyzes customer queries to determine intent and extract key information
+### Architecture Strengths
+- **Clean Multi-Agent Design**: Well-separated concerns with distinct agent responsibilities
+- **Conversation Management**: Effective state handling for multi-turn conversations
+- **Multiple Data Sources**: Comprehensive information retrieval from various sources
+- **Modern Web Interface**: Professional Gradio-based chat interface
+- **Environment Security**: Proper API key management with environment variables
 
-**Capabilities**:
-- Query type classification (order_tracking, product_info, delivery_info, etc.)
-- Key information extraction (order IDs, customer details)
-- Missing information identification
-- Urgency assessment
-- Multi-language support (English/German)
+### Security Features
+- API keys stored in environment variables
+- .env file excluded from version control
+- Secure deployment configuration
+- Input validation and error handling
 
-### Information Retriever Agent
-**Purpose**: Retrieves relevant information from multiple data sources
+### Performance Considerations
+- Efficient conversation state management
+- Optimized API calls with proper error handling
+- Responsive web interface
+- Scalable architecture for deployment
 
-**Data Sources**:
-- Internal order database lookup
-- Knowledge base semantic search
-- Pinecone vector database
-- Tavily web search API
-- Fallback text similarity search
+## API Keys and Security
 
-**Search Methods**:
-- Exact order ID matching
-- Customer name/email fuzzy matching
-- Semantic similarity search
-- Keyword-based text search
-- External web search when needed
-
-### Response Generator Agent
-**Purpose**: Creates contextual, helpful responses based on retrieved information
-
-**Features**:
-- Context-aware response generation
-- Multi-language response capability
-- Missing information handling
-- Source attribution
-- Professional tone maintenance
-- Escalation recommendations
-
-## Performance Considerations
-
-### Optimization Strategies
-- Implement response caching for common queries
-- Use connection pooling for database operations
-- Batch vector operations when possible
-- Implement async operations for external API calls
-
-### Monitoring and Logging
-```python
-import logging
-
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-```
-
-### Error Handling Best Practices
-- Implement retry logic for API failures
-- Use circuit breakers for external services
-- Provide graceful degradation when services are unavailable
-- Log errors with sufficient context for debugging
-
-## Testing
-
-### Unit Testing
-Test individual agent components:
-```bash
-python -m pytest tests/test_query_analyzer.py
-python -m pytest tests/test_information_retriever.py
-python -m pytest tests/test_response_generator.py
-```
-
-### Integration Testing
-Test the complete workflow:
-```bash
-python -m pytest tests/test_integration.py
-```
-
-### Manual Testing
-Test specific scenarios:
-```python
-# Test order tracking
-bot = AsiaonPlateBot()
-response = bot.process_query("Track order 12345")
-print(response)
-
-# Test product inquiry
-response = bot.process_query("Do you have Korean kimchi?")
-print(response)
-```
-
-## Deployment Considerations
-
-### Production Deployment
-- Use environment variables for sensitive configuration
-- Implement proper logging and monitoring
-- Set up health checks and alerting
-- Use containerization (Docker) for consistent deployment
-- Implement load balancing for high availability
+### Required API Keys
+1. **AWS Bedrock**: Access Key ID and Secret Access Key
+2. **Tavily**: API key for web search functionality
+3. **Pinecone**: API key for vector database operations
 
 ### Security Best Practices
 - Never commit API keys to version control
-- Use AWS IAM roles instead of access keys when possible
-- Implement rate limiting to prevent abuse
-- Validate and sanitize all user inputs
+- Use environment variables for all sensitive data
+- Implement proper error handling for API failures
 - Use HTTPS for all external communications
+- Regular key rotation recommended
 
 ## Troubleshooting
 
 ### Common Issues
 
-**Bot not responding:**
-- Check AWS Bedrock credentials and permissions
-- Verify internet connectivity for external APIs
-- Check log files for error messages
+**Environment Variables Not Loading:**
+```bash
+# Ensure python-dotenv is installed
+pip install python-dotenv
 
-**Poor response quality:**
-- Adjust temperature settings in config.py
-- Review and update knowledge base content
-- Fine-tune prompt engineering in agents
+# Check .env file exists and has correct format
+cat .env
+```
 
-**Slow performance:**
-- Implement caching for frequent queries
-- Optimize vector database operations
-- Consider using faster embedding models
+**Gradio Interface Not Starting:**
+```bash
+# Check port availability
+lsof -i :7860
 
-**High API costs:**
-- Monitor token usage and implement limits
-- Cache responses for repeated queries
-- Use smaller models for simple tasks
+# Try different port
+PORT=8080 python app.py
+```
+
+**AWS Bedrock Access Issues:**
+- Verify AWS credentials and permissions
+- Check Bedrock model access in AWS console
+- Ensure correct region configuration
+
+**API Rate Limits:**
+- Implement exponential backoff
+- Monitor API usage
+- Consider caching frequent queries
 
 ### Debug Mode
-Enable detailed logging for troubleshooting:
 ```python
+# Enable detailed logging
 import logging
 logging.getLogger().setLevel(logging.DEBUG)
 ```
 
-## Future Enhancements
+## Performance Optimization
 
-### Planned Features
-- Integration with actual order management systems
-- Advanced analytics and reporting
-- Voice interface support
-- Mobile app integration
-- Multi-tenant support for different businesses
+### Recommended Improvements
+1. **Implement Caching**: Redis or in-memory caching for frequent queries
+2. **Async Operations**: Make API calls asynchronous for better performance
+3. **Enhanced Embeddings**: Use sentence-transformers instead of simple word count
+4. **Connection Pooling**: Optimize database and API connections
+5. **Load Balancing**: For high-traffic deployments
 
-### Technical Improvements
-- Implement proper database backend
-- Add comprehensive test suite
-- Implement CI/CD pipeline
-- Add performance monitoring
-- Implement A/B testing for response quality
+## Testing
+
+### Local Testing
+```bash
+# Test the web interface
+python app.py
+
+# Test command line interface
+python main.py
+
+# Test individual components
+python -c "from agents.query_analyzer import QueryAnalyzerAgent; print('Import successful')"
+```
+
+### Example Test Queries
+- "I want to track my order 12345"
+- "Do you have Korean kimchi?"
+- "What are your delivery hours?"
+- "How can I return an item?"
+- "john@example.com" (for follow-up queries)
 
 ## Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes with proper testing
-4. Submit a pull request with detailed description
+4. Update documentation as needed
+5. Submit a pull request with detailed description
 
 ## License
 
@@ -345,12 +364,21 @@ This project is licensed under the MIT License.
 
 For technical support or questions:
 - Create an issue in the repository
-- Contact the development team
 - Check the troubleshooting section above
+- Ensure all dependencies are properly installed
+- Verify API keys and configurations are correct
 
 ## Acknowledgments
 
 - AWS Bedrock for LLM capabilities
 - Pinecone for vector database services
 - Tavily for web search functionality
+- Gradio for the modern web interface
 - The LangChain community for inspiration and best practices
+
+## Version History
+
+- **v1.0.0**: Initial release with multi-agent architecture
+- **v1.1.0**: Added Gradio web interface
+- **v1.2.0**: Implemented environment variable security
+- **Current**: Enhanced documentation and deployment guides

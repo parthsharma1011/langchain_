@@ -1,3 +1,6 @@
+# Environment variables
+.env
+
 # Python
 __pycache__/
 *.py[cod]
@@ -20,7 +23,7 @@ wheels/
 .installed.cfg
 *.egg
 
-# Virtual Environment
+# Virtual environments
 venv/
 env/
 ENV/
@@ -41,6 +44,3 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
-
-# API Keys (keep local only)
-config/api_keys.py
