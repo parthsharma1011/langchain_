@@ -29,7 +29,7 @@ def reset_conversation():
     return []
 
 # Create Gradio interface
-with gr.Blocks(title="Asia on Plate Customer Service", theme=gr.themes.Soft()) as demo:
+with gr.Blocks(title="Asia on Plate Customer Service") as demo:
     gr.Markdown(
         """
         # 🍜 Asia on Plate Customer Service Bot
