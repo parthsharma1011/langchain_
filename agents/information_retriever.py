@@ -6,9 +6,9 @@ import json
 from tavily import TavilyClient
 from config import Config
 from difflib import SequenceMatcher
-from pinecone import Pinecone
 import time
-import hashlib 
+import hashlib
+import requests as pinecone_requests 
 
 class InformationRetrieverAgent:
     def __init__(self, bedrock_client):
@@ -27,8 +27,8 @@ class InformationRetrieverAgent:
         # Initialize simple text search
         self.kb_chunks = self._prepare_knowledge_chunks()
         
-        # Initialize Pinecone vector database
-        self._setup_pinecone()
+        # Initialize simple vector database (Pinecone disabled for compatibility)
+        self.index = None
             
     def retrieve(self,query_analysis):
         """
@@ -122,40 +122,21 @@ class InformationRetrieverAgent:
         chunks = self.knowledge_base.split('\n\n')
         return [chunk.strip() for chunk in chunks if chunk.strip()]
     
-    def _setup_pinecone(self):
+    def _setup_simple_vector_db(self):
+        """Simple in-memory vector database replacement for Pinecone"""
         try:
-            pc = Pinecone(api_key=Config.PINECONE_API_KEY)
-            index_name = "knowledge-base"
-            
-            #create index if it doesn't exist
-            if index_name not in pc.list_indexes().names():
-                pc.create_index(
-                    name=index_name,
-                    dimension=384,
-                    metric='cosine',
-                    spec = {'serverless':
-                        {"cloud":"aws",
-                         "region":"us-east-1"}}
-                )
-                time.sleep(10)
-                
-            self.index = pc.Index(index_name)
-            
-            embeddings = self._create_simple_embeddings()
-            
-            vectors = [
-                {
-                    "id": f"chunk_{i}",
-                    "values": embeddings[i],
-                    "metadata": {"text":chunk}
+            self.embeddings = self._create_simple_embeddings()
+            self.vector_db = {
+                f"chunk_{i}": {
+                    "embedding": self.embeddings[i],
+                    "text": chunk
                 }
                 for i, chunk in enumerate(self.kb_chunks)
-            ]
-            
-            self.index.upsert(vectors=vectors)
+            }
+            print("Simple vector database initialized")
         except Exception as e:
-            print(f"Error setting up Pinecone: {e}")
-            self.index = None
+            print(f"Error setting up vector database: {e}")
+            self.vector_db = {}
            
     #not very good technique 
     def _create_simple_embeddings(self):
@@ -211,24 +192,11 @@ class InformationRetrieverAgent:
     
     def _search_knowledge_base(self, query):
         try:
-            if not self.index:
-                return self._fallback_text_search(query)
-            
-            query_embedding = self._create_query_embedding(query)
-            
-            results = self.index.query(
-                vector=query_embedding,
-                top_k=3,
-                include_metadata=True
-            )
-            
-            #chunk - text 
-            if results.matches:
-                return '\n'.join(match.metadata['text'] for match in results.matches)
+            # Use simple text search instead of vector search
+            return self._fallback_text_search(query)
         except Exception as e:
             print(f"Error searching knowledge base: {e}")
-            return self._fallback_text_search(query)
-        return None
+            return None
     
     def _fallback_text_search(self, query):
         try:
