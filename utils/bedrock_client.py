@@ -30,8 +30,9 @@ def call_claude(client, prompt, temperature=0.3, max_tokens=1024):
             body = json.dumps(payload).encode('utf-8'),
             contentType='application/json'
         )
-        response_body = json.loads(response['body'].read())
-        return response_body['content'][0]['text']
+        reponse_body = json.loads(response['body'].read())
+        return reponse_body['content'][0]['text']
     except Exception as e:
         print(f"Error calling Bedrock model: {e}")
         return None
+    
